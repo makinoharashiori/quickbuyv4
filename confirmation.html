@@ -1,0 +1,863 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Order Confirmation - QuickBuy</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    /* Base Styles */
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      margin: 0;
+      padding: 0;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      background-color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: "Shrikhand", cursive;
+    }
+
+    .logo img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .logo .highlight {
+      color: #f9af23;
+    }
+
+    .viviene {
+      color: blue;
+    }
+
+    .er {
+      color: blue;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: black;
+      font-size: 16px;
+    }
+
+    .nav-links a:hover {
+      font-weight: bold;
+    }
+
+    .icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .user-dropdown-content {
+      display: none;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0, 0, 0, 0.2);
+      z-index: 1001;
+      border-radius: 8px;
+    }
+
+    .user-dropdown-content a {
+      color: black;
+      padding: 10px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .user-dropdown-content a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .user-dropdown:hover .user-dropdown-content {
+      display: block;
+    }
+
+    .user-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      object-fit: cover;
+    }
+
+    .cart-icon {
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+    }
+
+    .cart-count {
+      position: absolute;
+      top: -5px;
+      right: 35px;
+      background-color: #f9af23;
+      color: white;
+      border-radius: 50%;
+      width: 18px;
+      height: 18px;
+      font-size: 12px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .user-email {
+      font-weight: bold;
+      color: #4267b2;
+      padding: 10px 16px;
+      border-bottom: 1px solid #eee;
+    }
+
+    /* Footer Styles */
+    .footer-container {
+      width: 100%;
+      padding: 40px 5%;
+      border-top: 4px solid black;
+      border-bottom: 4px solid black;
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      position: relative;
+      margin-top: 50px;
+    }
+
+    .footer-section {
+      width: 30%;
+      min-height: 150px;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+    }
+
+    .footer-center {
+      text-align: center;
+      font-size: 14px;
+      color: #777;
+    }
+
+    .footer-center .location {
+      margin-top: 10px;
+      font-weight: bold;
+    }
+
+    .social-icons {
+      margin-top: 12px;
+      font-size: 18px;
+    }
+
+    .social-icons i {
+      margin: 0 6px;
+      cursor: pointer;
+    }
+
+    .footer-links {
+      font-size: 14px;
+      display: flex;
+      justify-content: space-between;
+    }
+
+    .footer-links div h4 {
+      margin: 0 0 6px;
+      font-size: 15px;
+      color: black;
+    }
+
+    .footer-links a {
+      display: block;
+      text-decoration: none;
+      color: black;
+      margin: 2px 0;
+    }
+
+    .footer-container::before,
+    .footer-container::after {
+      content: "";
+      position: absolute;
+      top: 0;
+      bottom: 0;
+      width: 4px;
+      background-color: black;
+    }
+
+    .footer-container::before {
+      left: 33.3%;
+    }
+
+    .footer-container::after {
+      left: 66.6%;
+    }
+
+    .footer-spike {
+      width: 4px;
+      height: 30px;
+      background: black;
+      margin: 0 auto;
+    }
+
+    /* Confirmation Page Styles */
+    .confirmation-container {
+      max-width: 800px;
+      margin: 50px auto;
+      background-color: white;
+      border-radius: 10px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+      padding: 30px;
+    }
+
+    .confirmation-header {
+      text-align: center;
+      margin-bottom: 30px;
+    }
+
+    .confirmation-header i {
+      font-size: 60px;
+      color: #4CAF50;
+      margin-bottom: 20px;
+    }
+
+    .confirmation-header h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+    }
+
+    .confirmation-header p {
+      color: #666;
+      font-size: 16px;
+    }
+
+    .order-details {
+      border: 1px solid #eee;
+      border-radius: 10px;
+      padding: 20px;
+      margin-bottom: 30px;
+    }
+
+    .order-details h2 {
+      margin-bottom: 15px;
+      font-size: 20px;
+    }
+
+    .order-info {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 20px;
+    }
+
+    .order-info-column {
+      flex: 1;
+    }
+
+    .order-info-column h3 {
+      font-size: 16px;
+      margin-bottom: 10px;
+      color: #666;
+    }
+
+    .order-info-column p {
+      margin: 5px 0;
+    }
+
+    .order-items {
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+
+    .order-items h3 {
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .order-item {
+      display: flex;
+      margin-bottom: 15px;
+      padding-bottom: 15px;
+      border-bottom: 1px solid #f5f5f5;
+    }
+
+    .order-item img {
+      width: 60px;
+      height: 60px;
+      object-fit: contain;
+      margin-right: 15px;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+    }
+
+    .order-item-details {
+      flex: 1;
+    }
+
+    .order-item-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .order-item-price {
+      color: #666;
+    }
+
+    .order-item-quantity {
+      color: #999;
+      font-size: 14px;
+    }
+
+    .order-summary {
+      margin-top: 20px;
+      border-top: 1px solid #eee;
+      padding-top: 20px;
+    }
+
+    .summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .summary-row.total {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #eee;
+    }
+
+    .actions {
+      display: flex;
+      justify-content: center;
+      gap: 20px;
+      margin-top: 30px;
+    }
+
+    .actions button {
+      padding: 12px 25px;
+      border-radius: 5px;
+      font-size: 16px;
+      cursor: pointer;
+      border: none;
+    }
+
+    .primary-button {
+      background-color: #4267b2;
+      color: white;
+    }
+
+    .secondary-button {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ddd;
+    }
+
+    .tracking-info {
+      background-color: #f9f9f9;
+      border-radius: 10px;
+      padding: 20px;
+      margin-top: 30px;
+    }
+
+    .tracking-info h3 {
+      margin-bottom: 15px;
+      font-size: 18px;
+    }
+
+    .tracking-info p {
+      margin-bottom: 10px;
+    }
+
+    .tracking-number {
+      font-family: monospace;
+      font-size: 18px;
+      background-color: #eee;
+      padding: 8px 15px;
+      border-radius: 5px;
+      display: inline-block;
+      margin: 10px 0;
+    }
+
+    .tracking-steps {
+      margin-top: 20px;
+    }
+
+    .tracking-step {
+      display: flex;
+      margin-bottom: 15px;
+    }
+
+    .step-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      background-color: #4267b2;
+      color: white;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+    }
+
+    .step-icon.pending {
+      background-color: #ccc;
+    }
+
+    .step-details {
+      flex: 1;
+    }
+
+    .step-title {
+      font-weight: bold;
+      margin-bottom: 3px;
+    }
+
+    .step-date {
+      font-size: 14px;
+      color: #666;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .order-info {
+        flex-direction: column;
+      }
+      
+      .order-info-column {
+        margin-bottom: 20px;
+      }
+      
+      .actions {
+        flex-direction: column;
+      }
+      
+      .actions button {
+        width: 100%;
+        margin-bottom: 10px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="LOGO Quick Buy.png" alt="Be a Quick Buyer Logo">
+      <span class="viviene">Be a <span class="highlight">Quick Buy<span class="er">er</span></span>
+    </div>
+    <nav class="nav-links">
+     
+    </nav>
+    <div class="icons">
+      <a href="profile.html#cart">
+        <img class="cart-icon" src="CARTTTTTT.jpg" alt="Cart Icon">
+        <span id="cart-count" class="cart-count">0</span>
+      </a>
+
+      <div class="user-dropdown">
+       
+        <div class="user-dropdown-content">
+          <div id="user-email" class="user-email">User</div>
+          <a href="profile.html">My Profile</a>
+          <a href="seller-dashboard.html">Seller Dashboard</a>
+          <a href="#" onclick="logout()">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <main class="confirmation-container">
+    <div class="confirmation-header">
+      <i class="fas fa-check-circle"></i>
+      <h1>Thank You for Your Order!</h1>
+      <p>Your order has been received and is being processed.</p>
+      <p>Order #<span id="order-number">12345</span></p>
+    </div>
+
+    <div class="order-details">
+      <h2>Order Details</h2>
+      
+      <div class="order-info">
+        <div class="order-info-column">
+          <h3>Shipping Information</h3>
+          <div id="shipping-info">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+        
+        <div class="order-info-column">
+          <h3>Payment Information</h3>
+          <div id="payment-info">
+            <!-- Will be filled by JavaScript -->
+          </div>
+        </div>
+      </div>
+      
+      <div class="order-items">
+        <h3>Items Ordered</h3>
+        <div id="ordered-items">
+          <!-- Will be filled by JavaScript -->
+        </div>
+        
+        <div class="order-summary">
+          <div class="summary-row">
+            <span>Subtotal</span>
+            <span id="subtotal">₱0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Shipping</span>
+            <span id="shipping-cost">₱0.00</span>
+          </div>
+          <div class="summary-row">
+            <span>Tax (12%)</span>
+            <span id="tax">₱0.00</span>
+          </div>
+          <div class="summary-row total">
+            <span>Total</span>
+            <span id="total">₱0.00</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="tracking-info">
+      <h3>Tracking Information</h3>
+      <p>You can track your order with the following tracking number:</p>
+      <div class="tracking-number" id="tracking-number">QBT-12345678</div>
+      
+      <div class="tracking-steps">
+        <div class="tracking-step">
+          <div class="step-icon">
+            <i class="fas fa-check"></i>
+          </div>
+          <div class="step-details">
+            <div class="step-title">Order Placed</div>
+            <div class="step-date" id="order-date">May 17, 2025</div>
+          </div>
+        </div>
+        
+        <div class="tracking-step">
+          <div class="step-icon pending">
+            <i class="fas fa-clock"></i>
+          </div>
+          <div class="step-details">
+            <div class="step-title">Processing</div>
+            <div class="step-date">Pending</div>
+          </div>
+        </div>
+        
+        <div class="tracking-step">
+          <div class="step-icon pending">
+            <i class="fas fa-box"></i>
+          </div>
+          <div class="step-details">
+            <div class="step-title">Shipped</div>
+            <div class="step-date">Pending</div>
+          </div>
+        </div>
+        
+        <div class="tracking-step">
+          <div class="step-icon pending">
+            <i class="fas fa-truck"></i>
+          </div>
+          <div class="step-details">
+            <div class="step-title">Out for Delivery</div>
+            <div class="step-date">Pending</div>
+          </div>
+        </div>
+        
+        <div class="tracking-step">
+          <div class="step-icon pending">
+            <i class="fas fa-home"></i>
+          </div>
+          <div class="step-details">
+            <div class="step-title">Delivered</div>
+            <div class="step-date">Pending</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="actions">
+      <button class="secondary-button" onclick="window.location.href='profile.html'">View My Orders</button>
+      <button class="primary-button" onclick="window.location.href='index.html'">Continue Shopping</button>
+    </div>
+  </main>
+
+  
+
+    
+
+  <script>
+    // Cart functionality for QuickBuy
+    
+    // Add to cart function
+    function addToCart(productId) {
+      // Find the product
+      const allProducts = getAllProducts();
+      const product = allProducts.find(p => p.id == productId);
+      
+      if (!product) {
+        showMessage('Product not found.', 'error');
+        return;
+      }
+      
+      // Get current cart
+      const cart = JSON.parse(localStorage.getItem('quickBuyCart') || '[]');
+      
+      // Check if product already exists in cart
+      const existingProductIndex = cart.findIndex(item => item.id == productId);
+      
+      if (existingProductIndex >= 0) {
+        // Increment quantity if product already exists
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        // Add new product to cart
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          category: product.category,
+          sellerEmail: product.sellerEmail,
+          quantity: 1
+        });
+      }
+      
+      // Save updated cart
+      localStorage.setItem('quickBuyCart', JSON.stringify(cart));
+      
+      // Update cart count
+      updateCartCount();
+      
+      // Show success message
+      showMessage(`${product.name} added to cart!`, 'success');
+    }
+    
+    // Update cart count
+    function updateCartCount() {
+      const cart = JSON.parse(localStorage.getItem('quickBuyCart') || '[]');
+      const cartCount = document.getElementById('cart-count');
+      
+      if (!cartCount) return;
+      
+      // Update count
+      cartCount.textContent = cart.length;
+      
+      // Hide count if cart is empty
+      if (cart.length === 0) {
+        cartCount.style.display = 'none';
+      } else {
+        cartCount.style.display = 'flex';
+      }
+    }
+    
+    // Show message
+    function showMessage(message, type) {
+      // Check if message container exists
+      let messageContainer = document.getElementById('message-container');
+      
+      // If it doesn't exist, create it
+      if (!messageContainer) {
+        messageContainer = document.createElement('div');
+        messageContainer.id = 'message-container';
+        messageContainer.style.position = 'fixed';
+        messageContainer.style.top = '20px';
+        messageContainer.style.right = '20px';
+        messageContainer.style.zIndex = '9999';
+        messageContainer.style.padding = '15px 20px';
+        messageContainer.style.borderRadius = '5px';
+        messageContainer.style.boxShadow = '0 4px 12px rgba(0,0,0,0.1)';
+        messageContainer.style.display = 'none';
+        document.body.appendChild(messageContainer);
+      }
+      
+      // Set message content and style
+      messageContainer.textContent = message;
+      messageContainer.className = type === 'error' ? 'error-message' : 'success-message';
+      
+      if (type === 'error') {
+        messageContainer.style.backgroundColor = '#f8d7da';
+        messageContainer.style.color = '#721c24';
+        messageContainer.style.border = '1px solid #f5c6cb';
+      } else {
+        messageContainer.style.backgroundColor = '#d4edda';
+        messageContainer.style.color = '#155724';
+        messageContainer.style.border = '1px solid #c3e6cb';
+      }
+      
+      // Show message
+      messageContainer.style.display = 'block';
+      
+      // Hide message after 3 seconds
+      setTimeout(() => {
+        messageContainer.style.display = 'none';
+      }, 3000);
+    }
+    
+    // Get all products from all sellers
+    function getAllProducts() {
+      // Get all seller products
+      const sellerProducts = JSON.parse(localStorage.getItem('sellerProducts') || '{}');
+      
+      // Flatten all products from all sellers into a single array
+      const allProducts = [];
+      
+      for (const sellerEmail in sellerProducts) {
+        const products = sellerProducts[sellerEmail];
+        
+        // Add seller info to each product
+        products.forEach(product => {
+          // Only add active products
+          if (product.status !== 'inactive') {
+            allProducts.push({
+              ...product,
+              sellerEmail: sellerEmail
+            });
+          }
+        });
+      }
+      
+      return allProducts;
+    }
+
+    document.addEventListener('DOMContentLoaded', function() {
+      // Get order ID from URL
+      const urlParams = new URLSearchParams(window.location.search);
+      const orderId = urlParams.get('orderId');
+      
+      if (!orderId) {
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Load order details
+      const orders = JSON.parse(localStorage.getItem('quickBuyOrders') || '[]');
+      const order = orders.find(o => o.id == orderId);
+      
+      if (!order) {
+        window.location.href = 'index.html';
+        return;
+      }
+      
+      // Display order details
+      displayOrderDetails(order);
+      
+      // Load user data
+      const userEmail = localStorage.getItem('userEmail');
+      if (userEmail) {
+        document.getElementById('user-email').textContent = userEmail;
+      }
+      
+      // Update cart count
+      updateCartCount();
+    });
+
+    function displayOrderDetails(order) {
+      // Order number
+      document.getElementById('order-number').textContent = order.id;
+      
+      // Shipping information
+      const shippingInfo = document.getElementById('shipping-info');
+      shippingInfo.innerHTML = `
+        <p><strong>${order.shippingDetails.fullName}</strong></p>
+        <p>${order.shippingDetails.email}</p>
+        <p>${order.shippingDetails.phone}</p>
+        <p>${order.shippingDetails.address}</p>
+        <p>${order.shippingDetails.city}, ${order.shippingDetails.postalCode}</p>
+        <p>${order.shippingDetails.country}</p>
+        <p><strong>Shipping Method:</strong> ${order.shippingDetails.shippingMethod === 'standard' ? 'Standard Shipping (3-5 business days)' : 'Express Shipping (1-2 business days)'}</p>
+      `;
+      
+      // Payment information
+      const paymentInfo = document.getElementById('payment-info');
+      let paymentMethodText = '';
+      
+      switch (order.paymentDetails.method) {
+        case 'credit-card':
+          const lastFour = order.paymentDetails.cardNumber.slice(-4).padStart(order.paymentDetails.cardNumber.length, '*');
+          paymentMethodText = `Credit Card ending in ${lastFour}`;
+          break;
+        case 'paypal':
+          paymentMethodText = 'PayPal';
+          break;
+        case 'gcash':
+          paymentMethodText = 'GCash';
+          break;
+        case 'cod':
+          paymentMethodText = 'Cash on Delivery';
+          break;
+      }
+      
+      paymentInfo.innerHTML = `
+        <p><strong>Payment Method:</strong> ${paymentMethodText}</p>
+        <p><strong>Order Date:</strong> ${new Date(order.createdAt).toLocaleDateString()}</p>
+        <p><strong>Order Status:</strong> ${order.status.charAt(0).toUpperCase() + order.status.slice(1)}</p>
+      `;
+      
+      // Order items
+      const orderedItems = document.getElementById('ordered-items');
+      orderedItems.innerHTML = '';
+      
+      order.items.forEach(item => {
+        const orderItem = document.createElement('div');
+        orderItem.className = 'order-item';
+        
+        orderItem.innerHTML = `
+          <img src="${item.image || 'https://via.placeholder.com/60x60'}" alt="${item.name}" onerror="this.src='https://via.placeholder.com/60x60'">
+          <div class="order-item-details">
+            <div class="order-item-name">${item.name}</div>
+            <div class="order-item-price">₱${item.price.toFixed(2)}</div>
+            <div class="order-item-quantity">Quantity: ${item.quantity}</div>
+          </div>
+        `;
+        
+        orderedItems.appendChild(orderItem);
+      });
+      
+      // Order summary
+      document.getElementById('subtotal').textContent = `₱${order.subtotal.toFixed(2)}`;
+      document.getElementById('shipping-cost').textContent = `₱${order.shippingCost.toFixed(2)}`;
+      document.getElementById('tax').textContent = `₱${order.tax.toFixed(2)}`;
+      document.getElementById('total').textContent = `₱${order.total.toFixed(2)}`;
+      
+      // Tracking information
+      document.getElementById('tracking-number').textContent = `QBT-${Math.floor(10000000 + Math.random() * 90000000)}`;
+      document.getElementById('order-date').textContent = new Date(order.createdAt).toLocaleDateString();
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'login.html';
+    }
+  </script>
+</body>
+</html>

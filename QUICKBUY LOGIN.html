@@ -1,0 +1,617 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>QuickBuy - Seller Login</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+      font-family: Arial, sans-serif;
+    }
+
+    body {
+      min-height: 100vh;
+      background-color: #f2efe1;
+      overflow: hidden;
+    }
+
+    /* Background Product Grid */
+    .background-grid {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      gap: 10px;
+      padding: 10px;
+      z-index: 0;
+    }
+
+    .background-grid .product-image {
+      width: 100%;
+      height: 400px;
+      object-fit: cover;
+      border-radius: 10px;
+    }
+
+    .background-grid .product-image:nth-child(even) {
+      transform: translateY(50px);
+    }
+
+    /* Overlay and Login Container */
+    .overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background-color: rgba(0, 0, 0, 0.5);
+      z-index: 1;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .login-container {
+      background: white;
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
+      width: 90%;
+      max-width: 435px;
+      text-align: center;
+      position: relative;
+      z-index: 2;
+    }
+
+    /* Logo */
+    .logo-wrapper {
+      position: absolute;
+      top: 0;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      z-index: 3;
+    }
+
+    .logo-wrapper img {
+      height: 160px;
+      width: 160px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 4px solid white;
+      box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+    }
+
+    /* Login Form */
+    .login-container h2 {
+      margin: 20px 0;
+      padding-top: 35px;
+      color: #333;
+      font-size: 24px;
+    }
+
+    .login-container h3 {
+      color: #4267b2;
+      margin-bottom: 20px;
+      font-size: 16px;
+    }
+
+    .input-group {
+      position: relative;
+      margin-bottom: 20px;
+    }
+
+    .input-group i {
+      position: absolute;
+      left: 15px;
+      top: 50%;
+      transform: translateY(-50%);
+      color: #4267b2;
+    }
+
+    .login-container input {
+      width: 100%;
+      height: 50px;
+      padding: 15px 15px 15px 45px;
+      margin-bottom: 15px;
+      border-radius: 15px;
+      border: 1px solid #4267b2;
+      font-size: 16px;
+      transition: border-color 0.3s, box-shadow 0.3s;
+    }
+
+    .login-container input:focus {
+      outline: none;
+      border-color: #f9af23;
+      box-shadow: 0 0 0 2px rgba(249, 175, 35, 0.2);
+    }
+
+    .remember-me {
+      display: flex;
+      align-items: center;
+      margin-bottom: 15px;
+      text-align: left;
+    }
+
+    .remember-me input {
+      width: auto;
+      height: auto;
+      margin: 0 10px 0 0;
+    }
+
+    .remember-me label {
+      font-size: 14px;
+      color: #555;
+    }
+
+    .forgot-password {
+      display: block;
+      text-align: right;
+      color: #f9af23;
+      font-size: 14px;
+      margin-bottom: 20px;
+      text-decoration: none;
+    }
+
+    .forgot-password:hover {
+      text-decoration: underline;
+    }
+
+    .login-button {
+      background: #4267b2;
+      color: white;
+      padding: 12px 20px;
+      width: 100%;
+      border: none;
+      border-radius: 25px;
+      cursor: pointer;
+      font-size: 16px;
+      font-weight: bold;
+      transition: background-color 0.3s, transform 0.2s;
+      margin-bottom: 15px;
+    }
+
+    .login-button:hover {
+      background: #365899;
+      transform: translateY(-2px);
+    }
+
+    .login-button:disabled {
+      background: #a0a0a0;
+      cursor: not-allowed;
+      transform: none;
+    }
+
+    .login-button .spinner {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      border: 2px solid rgba(255, 255, 255, 0.3);
+      border-radius: 50%;
+      border-top-color: white;
+      animation: spin 1s ease-in-out infinite;
+      margin-right: 8px;
+    }
+
+    @keyframes spin {
+      to { transform: rotate(360deg); }
+    }
+
+    .links {
+      margin-top: 20px;
+      font-size: 14px;
+      color: #666;
+    }
+
+    .links a {
+      color: #4267b2;
+      text-decoration: none;
+    }
+
+    .links a:hover {
+      text-decoration: underline;
+    }
+
+    /* Tab Styling */
+    .tabs {
+      display: flex;
+      width: 100%;
+      margin-bottom: 20px;
+      border-bottom: 2px solid #e0e0e0;
+    }
+
+    .tab {
+      flex: 1;
+      text-align: center;
+      padding: 13px 0 10px 0;
+      cursor: pointer;
+      font-weight: 600;
+      color: #888;
+      font-size: 16px;
+      background: none;
+      border: none;
+      outline: none;
+      transition: color 0.2s, border-bottom 0.2s;
+      position: relative;
+    }
+
+    .tab.active {
+      color: #4267b2;
+    }
+
+    .tab.active::after {
+      content: '';
+      display: block;
+      margin: 0 auto;
+      width: 60%;
+      height: 3px;
+      background: #4267b2;
+      border-radius: 2px;
+      position: absolute;
+      left: 20%;
+      bottom: -2px;
+    }
+
+    /* Message Styling */
+    .message {
+      padding: 11px 15px;
+      border-radius: 6px;
+      margin-bottom: 20px;
+      display: none;
+      font-size: 15px;
+      text-align: center;
+    }
+
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    /* Form Group Styling */
+    .form-group {
+      margin-bottom: 22px;
+      width: 100%;
+    }
+
+    .form-group label {
+      display: block;
+      margin-bottom: 7px;
+      color: #333;
+      font-weight: 500;
+      font-size: 15px;
+    }
+
+    .form-group input {
+      width: 100%;
+      padding: 13px 16px;
+      border: 1.5px solid #d0d0d0;
+      border-radius: 9px;
+      font-size: 16px;
+      background: #f7faff;
+      transition: border-color 0.2s, background 0.2s;
+    }
+
+    .form-group input:focus {
+      border-color: #4267b2;
+      outline: none;
+      background: #fff;
+    }
+
+    .form-group input::placeholder {
+      color: #b0b8c1;
+      font-size: 12px;
+      opacity: 1;
+      font-style: italic;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .background-grid {
+        grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+      }
+      
+      .logo-wrapper img {
+        height: 120px;
+        width: 120px;
+      }
+      
+      .login-container {
+        padding: 20px;
+      }
+      
+      .login-container h2 {
+        font-size: 20px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      .background-grid .product-image {
+        height: 200px;
+      }
+      
+      .logo-wrapper img {
+        height: 100px;
+        width: 100px;
+      }
+    }
+  </style>
+</head>
+<body>
+  <!-- Background Product Grid -->
+  <div class="background-grid" id="background-grid">
+    <!-- Product images will be added dynamically -->
+  </div>
+
+  <!-- Overlay and Login Container -->
+  <div class="overlay">
+    <div class="login-container">
+      <div class="logo-wrapper">
+        <img src="LOGO Quick Buy.png" alt="QuickBuy Logo" id="logo-image" onerror="this.src='https://via.placeholder.com/160'">
+      </div>
+      
+      
+      <h2>Be a <span class="highlight">Quick Buy</span>er </h2>
+      <h3 id="form-title">Login to your account</h3>
+      
+      <!-- Error Message -->
+      <div class="error-message" id="error-message" style="display:none;"></div>
+      <div id="message-container" class="message"></div>
+      <!-- Tab Switcher -->
+      <div class="tabs" style="display:flex; margin-bottom:18px;">
+        <div class="tab active" id="login-tab" style="flex:1;cursor:pointer;">Login</div>
+        <div class="tab" id="register-tab" style="flex:1;cursor:pointer;">Register</div>
+      </div>
+      <!-- Login Form -->
+      <form id="login-form">
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="password" placeholder="Password" required>
+        </div>
+        <div class="remember-me">
+          <input type="checkbox" id="remember">
+          <label for="remember">Remember me</label>
+        </div>
+        <a href="#" class="forgot-password" id="forgot-password-link">Forgot password?</a>
+        <button type="submit" class="login-button" id="login-button">Log in</button>
+      </form>
+      <!-- Register Form -->
+      <form id="register-form" style="display:none;">
+        <div class="input-group">
+          <i class="fas fa-user"></i>
+          <input type="text" id="register-name" placeholder="Full Name" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-envelope"></i>
+          <input type="email" id="register-email" placeholder="Email" required>
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="register-password" placeholder="Password" required minlength="6">
+        </div>
+        <div class="input-group">
+          <i class="fas fa-lock"></i>
+          <input type="password" id="register-confirm-password" placeholder="Confirm Password" required minlength="6">
+        </div>
+        <button type="submit" class="login-button" id="register-button">Register</button>
+      </form>
+      <div class="links">
+        <p>Not a seller yet? <a href="Loginsiller.html">Apply to become a seller</a></p>
+        
+      </div>
+    </div>
+  </div>
+
+  <script type="module">
+    import { initializeApp } from "https://www.gstatic.com/firebasejs/11.8.0/firebase-app.js";
+    import { getAuth, signInWithEmailAndPassword, createUserWithEmailAndPassword, sendPasswordResetEmail } from "https://www.gstatic.com/firebasejs/11.8.0/firebase-auth.js";
+    import { getFirestore, doc, setDoc, serverTimestamp } from "https://www.gstatic.com/firebasejs/11.8.0/firebase-firestore.js";
+
+    // Generate background product grid
+    const backgroundGrid = document.getElementById('background-grid');
+    const productCount = 16;
+    
+    for (let i = 1; i <= productCount; i++) {
+      const img = document.createElement('img');
+      img.className = 'product-image';
+      img.src = `Product Image (${i}).png`;
+      img.alt = `Product ${i}`;
+      img.onerror = function() {
+        this.src = `https://placehold.co/300x400?text=Product+${i}`;
+      };
+      backgroundGrid.appendChild(img);
+    }
+
+    const firebaseConfig = {
+      apiKey: "AIzaSyD_4yi9Lo2jPWK4-DHV3e8XvNZjf_jXn4U",
+      authDomain: "wayfarer-d29dc.firebaseapp.com",
+      projectId: "wayfarer-d29dc",
+      storageBucket: "wayfarer-d29dc.appspot.com",
+      messagingSenderId: "897335632665",
+      appId: "1:897335632665:web:58acc992e38797c08d5b88",
+      measurementId: "G-W0N9VQ8HPG"
+    };
+    const app = initializeApp(firebaseConfig);
+    const auth = getAuth(app);
+    const db = getFirestore(app);
+
+    // Tab switching
+    const loginTab = document.getElementById('login-tab');
+    const registerTab = document.getElementById('register-tab');
+    const loginForm = document.getElementById('login-form');
+    const registerForm = document.getElementById('register-form');
+    const formTitle = document.getElementById('form-title');
+    loginTab.addEventListener('click', () => {
+      loginTab.classList.add('active');
+      registerTab.classList.remove('active');
+      loginForm.style.display = 'block';
+      registerForm.style.display = 'none';
+      formTitle.textContent = 'Login to your account';
+    });
+    registerTab.addEventListener('click', () => {
+      loginTab.classList.remove('active');
+      registerTab.classList.add('active');
+      loginForm.style.display = 'none';
+      registerForm.style.display = 'block';
+      formTitle.textContent = 'Register a new account';
+    });
+
+    // Show message
+    function showMessage(message, type = 'success') {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.textContent = message;
+      messageContainer.className = `message ${type}-message`;
+      messageContainer.style.display = 'block';
+      setTimeout(() => {
+        messageContainer.style.display = 'none';
+      }, 3000);
+    }
+
+    // Login
+    loginForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const email = document.getElementById('email').value;
+      const password = document.getElementById('password').value;
+      const rememberMe = document.getElementById('remember').checked;
+      const loginButton = document.getElementById('login-button');
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.style.display = 'none';
+      loginButton.disabled = true;
+      loginButton.innerHTML = '<span class="spinner"></span> Logging in...';
+      try {
+        const userCredential = await signInWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, "users", userCredential.user.uid), {
+          email: userCredential.user.email,
+          lastLogin: serverTimestamp()
+        }, { merge: true });
+        if (rememberMe) {
+          localStorage.setItem('savedSellerEmail', email);
+        } else {
+          localStorage.removeItem('savedSellerEmail');
+        }
+        showMessage('Login successful!', 'success');
+        window.location.href = 'index.html';
+      } catch (error) {
+        let msg = 'An error occurred during login';
+        switch (error.code) {
+          case 'auth/user-not-found':
+            msg = 'No account found with this email';
+            break;
+          case 'auth/wrong-password':
+            msg = 'Incorrect password';
+            break;
+          case 'auth/invalid-email':
+            msg = 'Invalid email address';
+            break;
+          case 'auth/user-disabled':
+            msg = 'This account has been disabled';
+            break;
+        }
+        errorMessage.textContent = msg;
+        errorMessage.style.display = 'block';
+      }
+      loginButton.disabled = false;
+      loginButton.textContent = 'Log in';
+    });
+
+    // Register
+    registerForm.addEventListener('submit', async (event) => {
+      event.preventDefault();
+      const name = document.getElementById('register-name').value;
+      const email = document.getElementById('register-email').value;
+      const password = document.getElementById('register-password').value;
+      const confirmPassword = document.getElementById('register-confirm-password').value;
+      const registerButton = document.getElementById('register-button');
+      const errorMessage = document.getElementById('error-message');
+      errorMessage.style.display = 'none';
+      if (password !== confirmPassword) {
+        showMessage('Passwords do not match', 'error');
+        return;
+      }
+      registerButton.disabled = true;
+      registerButton.innerHTML = '<span class="spinner"></span> Registering...';
+      try {
+        const userCredential = await createUserWithEmailAndPassword(auth, email, password);
+        await setDoc(doc(db, "users", userCredential.user.uid), {
+          name: name,
+          email: email,
+          createdAt: serverTimestamp(),
+          lastLogin: serverTimestamp()
+        });
+        showMessage('Registration successful! Go To Login', 'success');
+        // Optionally, switch to login tab
+        setTimeout(() => {
+          loginTab.click();
+        }, 1200);
+      } catch (error) {
+        let msg = 'An error occurred during registration';
+        switch (error.code) {
+          case 'auth/email-already-in-use':
+            msg = 'Email is already registered';
+            break;
+          case 'auth/invalid-email':
+            msg = 'Invalid email address';
+            break;
+          case 'auth/operation-not-allowed':
+            msg = 'Email/password accounts are not enabled';
+            break;
+          case 'auth/weak-password':
+            msg = 'Password should be at least 6 characters';
+            break;
+        }
+        errorMessage.textContent = msg;
+        errorMessage.style.display = 'block';
+      }
+      registerButton.disabled = false;
+      registerButton.textContent = 'Register';
+    });
+
+    // Forgot password
+    document.getElementById('forgot-password-link').addEventListener('click', async (event) => {
+      event.preventDefault();
+      const email = prompt('Please enter your email address:');
+      if (email) {
+        try {
+          await sendPasswordResetEmail(auth, email);
+          showMessage('Password reset email sent!', 'success');
+        } catch (error) {
+          let msg = 'An error occurred';
+          switch (error.code) {
+            case 'auth/user-not-found':
+              msg = 'No account found with this email';
+              break;
+            case 'auth/invalid-email':
+              msg = 'Invalid email address';
+              break;
+          }
+          showMessage(msg, 'error');
+        }
+      }
+    });
+
+    // Autofill email if remembered
+    const savedEmail = localStorage.getItem('savedSellerEmail');
+    if (savedEmail) {
+      document.getElementById('email').value = savedEmail;
+      document.getElementById('remember').checked = true;
+    }
+  </script>
+</body>
+</html>

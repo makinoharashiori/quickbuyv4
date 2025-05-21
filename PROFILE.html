@@ -1,0 +1,1200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>QuickBuy - My Profile</title>
+  <link href="https://fonts.googleapis.com/css2?family=Shrikhand&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: Arial, sans-serif;
+      background-color: #f0f0f0;
+      min-height: 100vh;
+    }
+
+    .navbar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 10px 30px;
+      background-color: white;
+      position: sticky;
+      top: 0;
+      z-index: 1000;
+      box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      font-family: 'Shrikhand', cursive;
+    }
+
+    .logo img {
+      width: 30px;
+      height: 30px;
+    }
+
+    .logo .highlight {
+      color: #f9af23;
+    }
+    .viviene {
+      color: blue;
+    }
+    .er {
+      color: blue;
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 20px;
+      align-items: center;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: black;
+      font-size: 16px;
+    }
+
+    .nav-links a:hover {
+      font-weight: bold;
+    }
+
+    .icons {
+      display: flex;
+      gap: 15px;
+      align-items: center;
+      position: relative;
+    }
+
+    .user-dropdown {
+      position: relative;
+      display: inline-block;
+    }
+
+    .user-dropdown-content {
+      display: none;
+      position: absolute;
+      top: 35px;
+      right: 0;
+      background-color: white;
+      min-width: 160px;
+      box-shadow: 0 8px 16px rgba(0,0,0,0.2);
+      z-index: 1001;
+      border-radius: 8px;
+    }
+
+    .user-dropdown-content a {
+      color: black;
+      padding: 10px 16px;
+      text-decoration: none;
+      display: block;
+    }
+
+    .user-dropdown-content a:hover {
+      background-color: #f0f0f0;
+    }
+
+    .user-dropdown:hover .user-dropdown-content {
+      display: block;
+    }
+
+    .user-icon {
+      width: 30px;
+      height: 30px;
+      border-radius: 50%;
+      cursor: pointer;
+      object-fit: cover;
+    }
+
+    .cart-icon {
+      width: 28px;
+      height: 28px;
+      cursor: pointer;
+    }
+
+    .user-email {
+      font-weight: bold;
+      color: #4267b2;
+      padding: 10px 16px;
+      border-bottom: 1px solid #eee;
+    }
+
+    /* Profile Page Styles */
+    .profile-container {
+      max-width: 1200px;
+      margin: 30px auto;
+      padding: 20px;
+      background-color: white;
+      border-radius: 12px;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    }
+
+    .profile-header {
+      display: flex;
+      align-items: center;
+      gap: 30px;
+      padding-bottom: 30px;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 30px;
+    }
+
+    .profile-picture-container {
+      position: relative;
+      width: 150px;
+      height: 150px;
+    }
+
+    .profile-picture {
+      width: 150px;
+      height: 150px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 3px solid #4267b2;
+    }
+
+    .profile-picture-overlay {
+      position: absolute;
+      bottom: 0;
+      right: 0;
+      background-color: #4267b2;
+      color: white;
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    }
+
+    .profile-picture-overlay i {
+      font-size: 18px;
+    }
+
+    .profile-info {
+      flex: 1;
+    }
+
+    .profile-info h1 {
+      font-size: 28px;
+      margin-bottom: 10px;
+      color: #333;
+    }
+
+    .profile-info p {
+      color: #666;
+      margin-bottom: 5px;
+    }
+
+    .profile-info .joined-date {
+      font-size: 14px;
+      color: #888;
+      margin-top: 10px;
+    }
+
+    .profile-tabs {
+      display: flex;
+      border-bottom: 1px solid #eee;
+      margin-bottom: 20px;
+    }
+
+    .profile-tab {
+      padding: 15px 20px;
+      cursor: pointer;
+      font-weight: bold;
+      color: #666;
+      border-bottom: 3px solid transparent;
+    }
+
+    .profile-tab.active {
+      color: #4267b2;
+      border-bottom-color: #4267b2;
+    }
+
+    .tab-content {
+      display: none;
+    }
+
+    .tab-content.active {
+      display: block;
+    }
+
+    /* Personal Info Tab */
+    .info-section {
+      margin-bottom: 30px;
+    }
+
+    .info-section h3 {
+      font-size: 18px;
+      margin-bottom: 15px;
+      color: #333;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .edit-button {
+      background-color: transparent;
+      border: none;
+      color: #4267b2;
+      cursor: pointer;
+      font-size: 14px;
+      display: flex;
+      align-items: center;
+      gap: 5px;
+    }
+
+    .info-grid {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    .info-item {
+      margin-bottom: 15px;
+    }
+
+    .info-item label {
+      display: block;
+      font-size: 14px;
+      color: #888;
+      margin-bottom: 5px;
+    }
+
+    .info-item p {
+      font-size: 16px;
+      color: #333;
+    }
+
+    .info-item input, .info-item select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      font-size: 16px;
+    }
+
+    .save-button {
+      background-color: #4267b2;
+      color: white;
+      border: none;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+    }
+
+    .cancel-button {
+      background-color: #f0f0f0;
+      color: #333;
+      border: 1px solid #ddd;
+      padding: 10px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      margin-top: 15px;
+      margin-left: 10px;
+    }
+
+    /* Cart Tab */
+    .cart-items {
+      margin-top: 20px;
+    }
+
+    .cart-item {
+      display: flex;
+      align-items: center;
+      padding: 15px 0;
+      border-bottom: 1px solid #eee;
+    }
+
+    .cart-item-image {
+      width: 80px;
+      height: 80px;
+      object-fit: contain;
+      background-color: #f9f9f9;
+      border-radius: 5px;
+      margin-right: 15px;
+    }
+
+    .cart-item-details {
+      flex: 1;
+    }
+
+    .cart-item-name {
+      font-weight: bold;
+      margin-bottom: 5px;
+    }
+
+    .cart-item-price {
+      color: #4267b2;
+      font-weight: bold;
+    }
+
+    .cart-item-quantity {
+      display: flex;
+      align-items: center;
+      margin-top: 10px;
+    }
+
+    .quantity-button {
+      width: 30px;
+      height: 30px;
+      background-color: #f0f0f0;
+      border: 1px solid #ddd;
+      border-radius: 5px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+    }
+
+    .quantity-input {
+      width: 40px;
+      height: 30px;
+      text-align: center;
+      border: 1px solid #ddd;
+      margin: 0 5px;
+    }
+
+    .cart-item-remove {
+      color: #e74c3c;
+      cursor: pointer;
+      margin-left: 20px;
+    }
+
+    .cart-summary {
+      margin-top: 30px;
+      background-color: #f9f9f9;
+      padding: 20px;
+      border-radius: 10px;
+    }
+
+    .cart-summary-row {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 10px;
+    }
+
+    .cart-summary-total {
+      font-weight: bold;
+      font-size: 18px;
+      margin-top: 10px;
+      padding-top: 10px;
+      border-top: 1px solid #ddd;
+    }
+
+    .checkout-button {
+      background-color: #4267b2;
+      color: white;
+      border: none;
+      padding: 12px 20px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-size: 16px;
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .empty-cart {
+      text-align: center;
+      padding: 50px 0;
+      color: #888;
+    }
+
+    .empty-cart i {
+      font-size: 50px;
+      margin-bottom: 20px;
+      color: #ddd;
+    }
+
+    /* File input hidden */
+    #profile-picture-input {
+      display: none;
+    }
+
+    /* Success/Error Messages */
+    .message {
+      padding: 10px 15px;
+      border-radius: 5px;
+      margin: 15px 0;
+    }
+
+    .success-message {
+      background-color: #d4edda;
+      color: #155724;
+      border: 1px solid #c3e6cb;
+    }
+
+    .error-message {
+      background-color: #f8d7da;
+      color: #721c24;
+      border: 1px solid #f5c6cb;
+    }
+
+    /* Responsive Design */
+    @media (max-width: 768px) {
+      .profile-header {
+        flex-direction: column;
+        text-align: center;
+      }
+
+      .profile-picture-container {
+        margin: 0 auto;
+      }
+
+      .info-grid {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <header class="navbar">
+    <div class="logo">
+      <img src="LOGO Quick Buy.png" alt="Be a Quick Buyer Logo">
+      <span class="viviene">Be a <span class="highlight">Quick Buy<span class="er">er</span></span>
+    </div>
+    <nav class="nav-links">
+      <a href="index.html">Home</a>
+      <a href="index.html">Shop</a>
+      
+    </nav>
+    <div class="icons">
+      <!-- Cart icon with counter -->
+      <a href="#" id="cart-icon-link">
+        <img class="cart-icon" src="CARTTTTTT.jpg" alt="Cart Icon">
+        <span id="cart-count" style="position: absolute; top: -5px; right: -5px; background-color: #ffffff; color: white; border-radius: 50%; width: 18px; height: 18px; font-size: 12px; display: flex; justify-content: center; align-items: center;"></span>
+      </a>
+
+      <div class="user-dropdown">
+        <img id="navbar-user-icon" src="https://via.placeholder.com/30x30" alt="User Icon" class="user-icon">
+        <div class="user-dropdown-content">
+          <div id="user-email" class="user-email">User</div>
+          <a href="profile.html">My Profile</a>
+          <a href="#">My Purchase</a>
+          <a href="QUICKBUY LOGIN.html" onclick="logout()">Log Out</a>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <div class="profile-container">
+    <!-- Profile Header with Picture -->
+    <div class="profile-header">
+      <div class="profile-picture-container">
+        <img id="profile-picture" src="https://via.placeholder.com/150x150" alt="Profile Picture" class="profile-picture">
+        <div class="profile-picture-overlay" onclick="document.getElementById('profile-picture-input').click()">
+          <i class="fas fa-camera"></i>
+        </div>
+        <input type="file" id="profile-picture-input" accept="image">
+      </div>
+      <div class="profile-info">
+        <h1 id="user-name">User Name</h1>
+        <p id="user-email-display">user@example.com</p>
+        <p class="joined-date">Member since <span id="joined-date">January 1, 2023</span></p>
+      </div>
+    </div>
+
+    <!-- Message Container -->
+    <div id="message-container" style="display: none;"></div>
+
+    <!-- Profile Tabs -->
+    <div class="profile-tabs">
+      <div class="profile-tab active" data-tab="personal-info">Personal Information</div>
+      <div class="profile-tab" data-tab="cart">My Cart</div>
+      <div class="profile-tab" data-tab="orders">Order History</div>
+    </div>
+
+    <!-- Tab Contents -->
+    <div id="personal-info" class="tab-content active">
+      <!-- Personal Information Section -->
+      <div class="info-section">
+        <h3>
+          Personal Details
+          <button class="edit-button" id="edit-personal-button">
+            <i class="fas fa-pencil-alt"></i> Edit
+          </button>
+        </h3>
+        
+        <div id="personal-info-display" class="info-grid">
+          <div class="info-item">
+            <label>Full Name</label>
+            <p id="display-name">arguel chen</p>
+          </div>
+          <div class="info-item">
+            <label>Email</label>
+            <p id="display-email">arguelchen.@example.com</p>
+          </div>
+          <div class="info-item">
+            <label>Phone Number</label>
+            <p id="display-phone">+1 (123) 456-7890</p>
+          </div>
+          <div class="info-item">
+            <label>Date of Birth</label>
+            <p id="display-dob">January 1, 1990</p>
+          </div>
+        </div>
+
+        <div id="personal-info-edit" class="info-grid" style="display: none;">
+          <div class="info-item">
+            <label for="edit-name">Full Name</label>
+            <input type="text" id="edit-name" placeholder="Enter your full name">
+          </div>
+          <div class="info-item">
+            <label for="edit-email">Email</label>
+            <input type="email" id="edit-email" placeholder="Enter your email" readonly>
+          </div>
+          <div class="info-item">
+            <label for="edit-phone">Phone Number</label>
+            <input type="tel" id="edit-phone" placeholder="Enter your phone number">
+          </div>
+          <div class="info-item">
+            <label for="edit-dob">Date of Birth</label>
+            <input type="date" id="edit-dob">
+          </div>
+          <div class="info-item" style="grid-column: span 2;">
+            <button class="save-button" id="save-personal-button">Save Changes</button>
+            <button class="cancel-button" id="cancel-personal-button">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Address Section -->
+      <div class="info-section">
+        <h3>
+          Address Information
+          <button class="edit-button" id="edit-address-button">
+            <i class="fas fa-pencil-alt"></i> Edit
+          </button>
+        </h3>
+        
+        <div id="address-info-display" class="info-grid">
+          <div class="info-item">
+            <label>Street Address</label>
+            <p id="display-street">123 Main St</p>
+          </div>
+          <div class="info-item">
+            <label>City</label>
+            <p id="display-city">Anytown</p>
+          </div>
+          <div class="info-item">
+            <label>State/Province</label>
+            <p id="display-state">State</p>
+          </div>
+          <div class="info-item">
+            <label>Postal Code</label>
+            <p id="display-postal">12345</p>
+          </div>
+          <div class="info-item">
+            <label>Country</label>
+            <p id="display-country">Country</p>
+          </div>
+        </div>
+
+        <div id="address-info-edit" class="info-grid" style="display: none;">
+          <div class="info-item">
+            <label for="edit-street">Street Address</label>
+            <input type="text" id="edit-street" placeholder="Enter your street address">
+          </div>
+          <div class="info-item">
+            <label for="edit-city">City</label>
+            <input type="text" id="edit-city" placeholder="Enter your city">
+          </div>
+          <div class="info-item">
+            <label for="edit-state">State/Province</label>
+            <input type="text" id="edit-state" placeholder="Enter your state/province">
+          </div>
+          <div class="info-item">
+            <label for="edit-postal">Postal Code</label>
+            <input type="text" id="edit-postal" placeholder="Enter your postal code">
+          </div>
+          <div class="info-item">
+            <label for="edit-country">Country</label>
+            <select id="edit-country">
+              <option value="">Select a country</option>
+              <option value="Philippines">Philippines</option>
+              <option value="United States">United States</option>
+              <option value="Canada">Canada</option>
+              <option value="United Kingdom">United Kingdom</option>
+              <option value="Australia">Australia</option>
+              <option value="Japan">Japan</option>
+              <option value="China">China</option>
+              <option value="India">India</option>
+              <option value="Germany">Germany</option>
+              <option value="France">France</option>
+            </select>
+          </div>
+          <div class="info-item" style="grid-column: span 2;">
+            <button class="save-button" id="save-address-button">Save Changes</button>
+            <button class="cancel-button" id="cancel-address-button">Cancel</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Password Section -->
+      <div class="info-section">
+        <h3>
+          Security
+          <button class="edit-button" id="edit-password-button">
+            <i class="fas fa-pencil-alt"></i> Change Password
+          </button>
+        </h3>
+        
+        <div id="password-info-display" class="info-grid">
+          <div class="info-item">
+            <label>Password</label>
+            <p>••••••••</p>
+          </div>
+        </div>
+
+        <div id="password-info-edit" class="info-grid" style="display: none;">
+          <div class="info-item">
+            <label for="current-password">Current Password</label>
+            <input type="password" id="current-password" placeholder="Enter your current password">
+          </div>
+          <div class="info-item">
+            <label for="new-password">New Password</label>
+            <input type="password" id="new-password" placeholder="Enter your new password">
+          </div>
+          <div class="info-item">
+            <label for="confirm-password">Confirm New Password</label>
+            <input type="password" id="confirm-password" placeholder="Confirm your new password">
+          </div>
+          <div class="info-item" style="grid-column: span 2;">
+            <button class="save-button" id="save-password-button">Update Password</button>
+            <button class="cancel-button" id="cancel-password-button">Cancel</button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div id="cart" class="tab-content">
+      <h3>Shopping Cart</h3>
+      
+      <div id="cart-items" class="cart-items">
+        <!-- Cart items will be dynamically added here -->
+      </div>
+      
+      <div id="cart-summary" class="cart-summary" style="display: none;">
+        <div class="cart-summary-row">
+          <span>Subtotal</span>
+          <span id="cart-subtotal">₱0.00</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Shipping</span>
+          <span id="cart-shipping">₱0.00</span>
+        </div>
+        <div class="cart-summary-row">
+          <span>Tax</span>
+          <span id="cart-tax">₱0.00</span>
+        </div>
+        <div class="cart-summary-row cart-summary-total">
+          <span>Total</span>
+          <span id="cart-total">₱0.00</span>
+          <a href="checkout.html">
+        </div>
+        <button class="checkout-button">Proceed to Checkout</button>
+      </div>
+    </a>
+      
+      <div id="empty-cart" class="empty-cart">
+        <i class="fas fa-shopping-cart"></i>
+        <h3>Your cart is empty</h3>
+        <p>Looks like you haven't added anything to your cart yet.</p>
+        <a href="index.html" style="display: inline-block; margin-top: 20px; color: #4267b2; text-decoration: none;">Continue Shopping</a>
+      </div>
+    </div>
+
+    <div id="orders" class="tab-content">
+      <h3>Order History</h3>
+      <p style="text-align: center; padding: 50px 0; color: #888;">You haven't placed any orders yet.</p>
+    </div>
+  </div>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function() {
+      // Check if user is logged in
+      const isLoggedIn = localStorage.getItem('isLoggedIn');
+      if (!isLoggedIn || isLoggedIn !== 'true') {
+        window.location.href = 'QUICKBUY LOGIN.html';
+        return;
+      }
+
+      // Get user email and data
+      const userEmail = localStorage.getItem('userEmail');
+      const users = JSON.parse(localStorage.getItem('quickBuyUsers') || '{}');
+      const userData = users[userEmail] || {};
+      
+      // Initialize cart if it doesn't exist
+      if (!localStorage.getItem('quickBuyCart')) {
+        localStorage.setItem('quickBuyCart', JSON.stringify([]));
+      }
+
+      // Load user data
+      loadUserData(userEmail, userData);
+      
+      // Load cart data
+      loadCartData();
+      
+      // Set up tab switching
+      setupTabs();
+      
+      // Set up edit buttons
+      setupEditButtons();
+      
+      // Set up profile picture upload
+      setupProfilePictureUpload();
+    });
+
+    function loadUserData(email, userData) {
+      // Display user email in navbar and profile
+      document.getElementById('user-email').textContent = email;
+      document.getElementById('user-email-display').textContent = email;
+      document.getElementById('display-email').textContent = email;
+      document.getElementById('edit-email').value = email;
+      
+      // Display user name if available
+      if (userData.name) {
+        document.getElementById('user-name').textContent = userData.name;
+        document.getElementById('display-name').textContent = userData.name;
+        document.getElementById('edit-name').value = userData.name;
+      }
+      
+      // Display joined date if available
+      if (userData.createdAt) {
+        const joinedDate = new Date(userData.createdAt);
+        const options = { year: 'numeric', month: 'long', day: 'numeric' };
+        document.getElementById('joined-date').textContent = joinedDate.toLocaleDateString('en-US', options);
+      }
+      
+      // Load profile picture if available
+      if (userData.profilePicture) {
+        document.getElementById('profile-picture').src = userData.profilePicture;
+        document.getElementById('navbar-user-icon').src = userData.profilePicture;
+      }
+      
+      // Load other user data if available
+      if (userData.phone) {
+        document.getElementById('display-phone').textContent = userData.phone;
+        document.getElementById('edit-phone').value = userData.phone;
+      }
+      
+      if (userData.dob) {
+        document.getElementById('display-dob').textContent = formatDate(userData.dob);
+        document.getElementById('edit-dob').value = userData.dob;
+      }
+      
+      // Load address data if available
+      if (userData.address) {
+        const address = userData.address;
+        
+        if (address.street) {
+          document.getElementById('display-street').textContent = address.street;
+          document.getElementById('edit-street').value = address.street;
+        }
+        
+        if (address.city) {
+          document.getElementById('display-city').textContent = address.city;
+          document.getElementById('edit-city').value = address.city;
+        }
+        
+        if (address.state) {
+          document.getElementById('display-state').textContent = address.state;
+          document.getElementById('edit-state').value = address.state;
+        }
+        
+        if (address.postal) {
+          document.getElementById('display-postal').textContent = address.postal;
+          document.getElementById('edit-postal').value = address.postal;
+        }
+        
+        if (address.country) {
+          document.getElementById('display-country').textContent = address.country;
+          document.getElementById('edit-country').value = address.country;
+        }
+      }
+    }
+
+    function loadCartData() {
+      const cart = JSON.parse(localStorage.getItem('quickBuyCart') || '[]');
+      const cartItemsContainer = document.getElementById('cart-items');
+      const cartSummary = document.getElementById('cart-summary');
+      const emptyCart = document.getElementById('empty-cart');
+      const cartCount = document.getElementById('cart-count');
+      
+      // Update cart count in navbar
+      cartCount.textContent = cart.length;
+      
+      // If cart is empty, show empty cart message
+      if (cart.length === 0) {
+        cartSummary.style.display = 'none';
+        emptyCart.style.display = 'block';
+        return;
+      }
+      
+      // Otherwise, show cart items and summary
+      cartSummary.style.display = 'block';
+      emptyCart.style.display = 'none';
+      
+      // Clear existing cart items
+      cartItemsContainer.innerHTML = '';
+      
+      // Calculate totals
+      let subtotal = 0;
+      
+      // Add each cart item
+      cart.forEach((item, index) => {
+        const itemTotal = item.price * item.quantity;
+        subtotal += itemTotal;
+        
+        const cartItemElement = document.createElement('div');
+        cartItemElement.className = 'cart-item';
+        cartItemElement.innerHTML = `
+          <img src="${item.image || 'https://via.placeholder.com/80x80'}" alt="${item.name}" class="cart-item-image">
+          <div class="cart-item-details">
+            <div class="cart-item-name">${item.name}</div>
+            <div class="cart-item-price">₱${item.price.toFixed(2)}</div>
+            <div class="cart-item-quantity">
+              <button class="quantity-button" onclick="updateCartItemQuantity(${index}, -1)">-</button>
+              <input type="number" class="quantity-input" value="${item.quantity}" min="1" onchange="updateCartItemQuantity(${index}, 0, this.value)">
+              <button class="quantity-button" onclick="updateCartItemQuantity(${index}, 1)">+</button>
+              <span class="cart-item-remove" onclick="removeCartItem(${index})">
+                <i class="fas fa-trash"></i> Remove
+              </span>
+            </div>
+          </div>
+        `;
+        
+        cartItemsContainer.appendChild(cartItemElement);
+      });
+      
+      // Update summary
+      const shipping = subtotal > 0 ? 150 : 0; // Fixed shipping cost
+      const tax = subtotal * 0.12; // 12% tax
+      const total = subtotal + shipping + tax;
+      
+      document.getElementById('cart-subtotal').textContent = `₱${subtotal.toFixed(2)}`;
+      document.getElementById('cart-shipping').textContent = `₱${shipping.toFixed(2)}`;
+      document.getElementById('cart-tax').textContent = `₱${tax.toFixed(2)}`;
+      document.getElementById('cart-total').textContent = `₱${total.toFixed(2)}`;
+    }
+
+    function updateCartItemQuantity(index, change, newValue) {
+      const cart = JSON.parse(localStorage.getItem('quickBuyCart') || '[]');
+      
+      if (newValue !== undefined) {
+        // Direct value change
+        cart[index].quantity = parseInt(newValue);
+      } else {
+        // Increment/decrement
+        cart[index].quantity += change;
+      }
+      
+      // Ensure quantity is at least 1
+      if (cart[index].quantity < 1) {
+        cart[index].quantity = 1;
+      }
+      
+      localStorage.setItem('quickBuyCart', JSON.stringify(cart));
+      loadCartData();
+    }
+
+    function removeCartItem(index) {
+      const cart = JSON.parse(localStorage.getItem('quickBuyCart') || '[]');
+      cart.splice(index, 1);
+      localStorage.setItem('quickBuyCart', JSON.stringify(cart));
+      loadCartData();
+    }
+
+    function setupTabs() {
+      const tabs = document.querySelectorAll('.profile-tab');
+      
+      tabs.forEach(tab => {
+        tab.addEventListener('click', function() {
+          // Remove active class from all tabs
+          tabs.forEach(t => t.classList.remove('active'));
+          
+          // Add active class to clicked tab
+          this.classList.add('active');
+          
+          // Hide all tab contents
+          document.querySelectorAll('.tab-content').forEach(content => {
+            content.classList.remove('active');
+          });
+          
+          // Show selected tab content
+          const tabId = this.getAttribute('data-tab');
+          document.getElementById(tabId).classList.add('active');
+        });
+      });
+    }
+
+    function setupEditButtons() {
+      // Personal Info Edit
+      document.getElementById('edit-personal-button').addEventListener('click', function() {
+        document.getElementById('personal-info-display').style.display = 'none';
+        document.getElementById('personal-info-edit').style.display = 'grid';
+      });
+      
+      document.getElementById('cancel-personal-button').addEventListener('click', function() {
+        document.getElementById('personal-info-display').style.display = 'grid';
+        document.getElementById('personal-info-edit').style.display = 'none';
+      });
+      
+      document.getElementById('save-personal-button').addEventListener('click', function() {
+        savePersonalInfo();
+      });
+      
+      // Address Info Edit
+      document.getElementById('edit-address-button').addEventListener('click', function() {
+        document.getElementById('address-info-display').style.display = 'none';
+        document.getElementById('address-info-edit').style.display = 'grid';
+      });
+      
+      document.getElementById('cancel-address-button').addEventListener('click', function() {
+        document.getElementById('address-info-display').style.display = 'grid';
+        document.getElementById('address-info-edit').style.display = 'none';
+      });
+      
+      document.getElementById('save-address-button').addEventListener('click', function() {
+        saveAddressInfo();
+      });
+      
+      // Password Edit
+      document.getElementById('edit-password-button').addEventListener('click', function() {
+        document.getElementById('password-info-display').style.display = 'none';
+        document.getElementById('password-info-edit').style.display = 'grid';
+      });
+      
+      document.getElementById('cancel-password-button').addEventListener('click', function() {
+        document.getElementById('password-info-display').style.display = 'grid';
+        document.getElementById('password-info-edit').style.display = 'none';
+      });
+      
+      document.getElementById('save-password-button').addEventListener('click', function() {
+        savePassword();
+      });
+    }
+
+    function savePersonalInfo() {
+      const name = document.getElementById('edit-name').value.trim();
+      const phone = document.getElementById('edit-phone').value.trim();
+      const dob = document.getElementById('edit-dob').value;
+      
+      if (!name) {
+        showMessage('Please enter your name.', 'error');
+        return;
+      }
+      
+      const userEmail = localStorage.getItem('userEmail');
+      const users = JSON.parse(localStorage.getItem('quickBuyUsers') || '{}');
+      
+      if (!users[userEmail]) {
+        users[userEmail] = {};
+      }
+      
+      users[userEmail].name = name;
+      users[userEmail].phone = phone;
+      users[userEmail].dob = dob;
+      
+      localStorage.setItem('quickBuyUsers', JSON.stringify(users));
+      
+      // Update display
+      document.getElementById('user-name').textContent = name;
+      document.getElementById('display-name').textContent = name;
+      document.getElementById('display-phone').textContent = phone || 'Not provided';
+      document.getElementById('display-dob').textContent = dob ? formatDate(dob) : 'Not provided';
+      
+      // Switch back to display view
+      document.getElementById('personal-info-display').style.display = 'grid';
+      document.getElementById('personal-info-edit').style.display = 'none';
+      
+      showMessage('Personal information updated successfully!', 'success');
+    }
+
+    function saveAddressInfo() {
+      const street = document.getElementById('edit-street').value.trim();
+      const city = document.getElementById('edit-city').value.trim();
+      const state = document.getElementById('edit-state').value.trim();
+      const postal = document.getElementById('edit-postal').value.trim();
+      const country = document.getElementById('edit-country').value;
+      
+      const userEmail = localStorage.getItem('userEmail');
+      const users = JSON.parse(localStorage.getItem('quickBuyUsers') || '{}');
+      
+      if (!users[userEmail]) {
+        users[userEmail] = {};
+      }
+      
+      users[userEmail].address = {
+        street,
+        city,
+        state,
+        postal,
+        country
+      };
+      
+      localStorage.setItem('quickBuyUsers', JSON.stringify(users));
+      
+      // Update display
+      document.getElementById('display-street').textContent = street || 'Not provided';
+      document.getElementById('display-city').textContent = city || 'Not provided';
+      document.getElementById('display-state').textContent = state || 'Not provided';
+      document.getElementById('display-postal').textContent = postal || 'Not provided';
+      document.getElementById('display-country').textContent = country || 'Not provided';
+      
+      // Switch back to display view
+      document.getElementById('address-info-display').style.display = 'grid';
+      document.getElementById('address-info-edit').style.display = 'none';
+      
+      showMessage('Address information updated successfully!', 'success');
+    }
+
+    function savePassword() {
+      const currentPassword = document.getElementById('current-password').value;
+      const newPassword = document.getElementById('new-password').value;
+      const confirmPassword = document.getElementById('confirm-password').value;
+      
+      if (!currentPassword || !newPassword || !confirmPassword) {
+        showMessage('Please fill in all password fields.', 'error');
+        return;
+      }
+      
+      if (newPassword !== confirmPassword) {
+        showMessage('New passwords do not match.', 'error');
+        return;
+      }
+      
+      if (newPassword.length < 6) {
+        showMessage('New password must be at least 6 characters long.', 'error');
+        return;
+      }
+      
+      const userEmail = localStorage.getItem('userEmail');
+      const users = JSON.parse(localStorage.getItem('quickBuyUsers') || '{}');
+      
+      if (!users[userEmail] || users[userEmail].password !== currentPassword) {
+        showMessage('Current password is incorrect.', 'error');
+        return;
+      }
+      
+      users[userEmail].password = newPassword;
+      localStorage.setItem('quickBuyUsers', JSON.stringify(users));
+      
+      // Clear password fields
+      document.getElementById('current-password').value = '';
+      document.getElementById('new-password').value = '';
+      document.getElementById('confirm-password').value = '';
+      
+      // Switch back to display view
+      document.getElementById('password-info-display').style.display = 'grid';
+      document.getElementById('password-info-edit').style.display = 'none';
+      
+      showMessage('Password updated successfully!', 'success');
+    }
+
+    function setupProfilePictureUpload() {
+      const fileInput = document.getElementById('profile-picture-input');
+      
+      fileInput.addEventListener('change', function(event) {
+        const file = event.target.files[0];
+        
+        if (!file) return;
+        
+        if (!file.type.match('image.*')) {
+          showMessage('Please select an image file.', 'error');
+          return;
+        }
+        
+        const reader = new FileReader();
+        
+        reader.onload = function(e) {
+          const imageData = e.target.result;
+          
+          // Update profile picture display
+          document.getElementById('profile-picture').src = imageData;
+          document.getElementById('navbar-user-icon').src = imageData;
+          
+          // Save to localStorage
+          const userEmail = localStorage.getItem('userEmail');
+          const users = JSON.parse(localStorage.getItem('quickBuyUsers') || '{}');
+          
+          if (!users[userEmail]) {
+            users[userEmail] = {};
+          }
+          
+          users[userEmail].profilePicture = imageData;
+          localStorage.setItem('quickBuyUsers', JSON.stringify(users));
+          
+          showMessage('Profile picture updated successfully!', 'success');
+        };
+        
+        reader.readAsDataURL(file);
+      });
+    }
+
+    function showMessage(message, type) {
+      const messageContainer = document.getElementById('message-container');
+      messageContainer.textContent = message;
+      messageContainer.className = `message ${type === 'error' ? 'error-message' : 'success-message'}`;
+      messageContainer.style.display = 'block';
+      
+      // Hide message after 3 seconds
+      setTimeout(function() {
+        messageContainer.style.display = 'none';
+      }, 3000);
+    }
+
+    function formatDate(dateString) {
+      if (!dateString) return 'Not provided';
+      
+      const date = new Date(dateString);
+      const options = { year: 'numeric', month: 'long', day: 'numeric' };
+      return date.toLocaleDateString('en-US', options);
+    }
+
+    function logout() {
+      localStorage.removeItem('isLoggedIn');
+      window.location.href = 'QUICKBUY LOGIN.html';
+    }
+
+    // Add to cart function (for demo purposes)
+    function addToCart(product) {
+      const cart = JSON.parse(localStorage.getItem('quickBuyCart') || '[]');
+      
+      // Check if product already exists in cart
+      const existingProductIndex = cart.findIndex(item => item.id === product.id);
+      
+      if (existingProductIndex >= 0) {
+        // Increment quantity if product already exists
+        cart[existingProductIndex].quantity += 1;
+      } else {
+        // Add new product to cart
+        cart.push({
+          id: product.id,
+          name: product.name,
+          price: product.price,
+          image: product.image,
+          quantity: 1
+        });
+      }
+      
+      localStorage.setItem('quickBuyCart', JSON.stringify(cart));
+      loadCartData();
+    }
+  </script>
+</body>
+</html>
